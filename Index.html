@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>D&D Тест: Какой класс вам подходит?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: #eee;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #f5af19, #f12711);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .sub {
+            text-align: center;
+            color: #bbb;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .question-card {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 1.5rem;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: 0.2s;
+            border-left: 4px solid #f5af19;
+        }
+
+        .question-text {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 0.5rem 0.8rem;
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            transition: 0.1s;
+        }
+
+        .option:hover {
+            background: rgba(245, 175, 25, 0.15);
+        }
+
+        input[type="radio"] {
+            margin-top: 0.2rem;
+            accent-color: #f5af19;
+            width: 1.2rem;
+            height: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: linear-gradient(95deg, #f5af19, #f12711);
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 3rem;
+            color: #1a1a2e;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-family: inherit;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            filter: brightness(1.05);
+        }
+
+        .reset-btn {
+            background: linear-gradient(95deg, #3a3a5e, #2a2a4a);
+            color: #eee;
+        }
+
+        .result {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(245, 175, 25, 0.4);
+            text-align: center;
+        }
+
+        .result-class {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #f5af19, #ff8c42);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0.5rem 0;
+        }
+
+        .result-desc {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-top: 0.8rem;
+            color: #ddd;
+        }
+
+        hr {
+            border-color: rgba(255,255,255,0.1);
+            margin: 1rem 0;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            .question-card {
+                padding: 1rem;
+            }
+            .question-text {
+                font-size: 1rem;
+            }
+            .result-class {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎲 Кто ты в D&D?</h1>
+    <div class="sub">Найди свой класс по характеру, работе и привычкам</div>
+
+    <form id="quizForm">
+        <!-- Вопрос 1 -->
+        <div class="question-card">
+            <div class="question-text">1. Вы столкнулись с неожиданной проблемой. Ваша первая реакция?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q1" value="Волшебник"> <span class="option-text">📚 Разобрать на части, найти информацию и составить план</span></label>
+                <label class="option"><input type="radio" name="q1" value="Варвар"> <span class="option-text">💥 Взорваться эмоционально или решить силой</span></label>
+                <label class="option"><input type="radio" name="q1" value="Бард"> <span class="option-text">🎭 Позвать друзей, обсудить и вдохновить их на действие</span></label>
+                <label class="option"><input type="radio" name="q1" value="Плут"> <span class="option-text">🕵️ Тихо обойти проблему или найти лазейку</span></label>
+                <label class="option"><input type="radio" name="q1" value="Паладин"> <span class="option-text">⚖️ Оценить моральную сторону: правильно ли это вообще?</span></label>
+            </div>
+        </div>
+
+        <!-- Вопрос 2 -->
+        <div class="question-card">
+            <div class="question-text">2. Какая рабочая обстановка вам ближе всего?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q2" value="Волшебник"> <span class="option-text">📖 Офис/лаборатория с книгами, схемами и тишиной</span></label>
+                <label class="option"><input type="radio" name="q2" value="Следопыт,Друид"> <span class="option-text">🏕️ Полевые условия: поездки, командировки, природа</span></label>
+                <label class="option"><input type="radio" name="q2" value="Варвар,Воин"> <span class="option-text">🏋️ Спортзал, стройка или место где нужно двигаться руками</span></label>
+                <label class="option"><input type="radio" name="q2" value="Бард,Чародей"> <span class="option-text">🎤 Сцена, переговорная или коворкинг — там, где люди и общение</span></label>
+                <label class="option"><input type="radio" name="q2" value="Паладин,Воин"> <span class="option-text">📋 Кабинет с чёткими правилами, графиком и ответственностью</span></label>
+            </div>
+        </div>
+
+        <!-- Вопрос 3 -->
+        <div class="question-card">
+            <div class="question-text">3. Что для вас важнее всего в команде?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q3" value="Жрец"> <span class="option-text">❤️ Чтобы все были как одна семья, и я мог о них заботиться</span></label>
+                <label class="option"><input type="radio" name="q3" value="Воин,Паладин"> <span class="option-text">🎯 Чтобы каждый был профессионалом и не подводил</span></label>
+                <label class="option"><input type="radio" name="q3" value="Плут,Следопыт"> <span class="option-text">🌿 Чтобы была свобода действий и меня не контролировали</span></label>
+                <label class="option"><input type="radio" name="q3" value="Бард,Чародей"> <span class="option-text">✨ Были интересные идеи и атмосфера творчества</span></label>
+                <label class="option"><input type="radio" name="q3" value="Друид,Монах"> <span class="option-text">☯️ Чтобы соблюдался баланс и никто не нарушал гармонию</span></label>
+            </div>
+        </div>
+
+        <!-- Вопрос 4 -->
+        <div class="question-card">
+            <div class="question-text">4. Как вы относитесь к правилам и авторитетам?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q4" value="Паладин"> <span class="option-text">⚜️ Правила важны, но есть высшие принципы (совесть, честь)</span></label>
+                <label class="option"><input type="radio" name="q4" value="Плут"> <span class="option-text">🔓 Правила созданы, чтобы их нарушать ради выгоды</span></label>
+                <label class="option"><input type="radio" name="q4" value="Монах,Воин"> <span class="option-text">🧘 Хорошие правила полезны, но я больше полагаюсь на свои тренировки</span></label>
+                <label class="option"><input type="radio" name="q4" value="Колдун"> <span class="option-text">📈 Я уважаю тех, кто сильнее/умнее, и учусь у них</span></label>
+                <label class="option"><input type="radio" name="q4" value="Варвар,Чародей"> <span class="option-text">🌀 Правила часто глупы, я действую по настроению и интуиции</span></label>
+            </div>
+        </div>
+
+        <!-- Вопрос 5 -->
+        <div class="question-card">
+            <div class="question-text">5. Чем вы любите заниматься в свободное время?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q5" value="Волшебник"> <span class="option-text">📚 Читать, учить новое, разбираться в сложных темах</span></label>
+                <label class="option"><input type="radio" name="q5" value="Друид,Следопыт"> <span class="option-text">🌲 Походы, сад, работа с животными или тишина в лесу</span></label>
+                <label class="option"><input type="radio" name="q5" value="Монах,Варвар"> <span class="option-text">🥋 Спорт, единоборства, йога или медитация</span></label>
+                <label class="option"><input type="radio" name="q5" value="Бард"> <span class="option-text">🎸 Тусовки, игры с друзьями, настолки или музыка</span></label>
+                <label class="option"><input type="radio" name="q5" value="Жрец"> <span class="option-text">🤝 Помогать другим: волонтёрство, наставничество, забота</span></label>
+            </div>
+        </div>
+
+        <!-- Вопрос 6 -->
+        <div class="question-card">
+            <div class="question-text">6. Ваша главная профессиональная «суперсила» — это:</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q6" value="Воин,Варвар"> <span class="option-text">🛡️ Упорство и надёжность — меня не сломать</span></label>
+                <label class="option"><input type="radio" name="q6" value="Бард,Чародей"> <span class="option-text">🗣️ Умение договариваться и убеждать кого угодно</span></label>
+                <label class="option"><input type="radio" name="q6" value="Плут"> <span class="option-text">🎭 Находить нестандартные решения, жульничать по-умному</span></label>
+                <label class="option"><input type="radio" name="q6" value="Друид,Волшебник"> <span class="option-text">🔮 Видеть общую картину и долгосрочные последствия</span></label>
+                <label class="option"><input type="radio" name="q6" value="Паладин,Монах"> <span class="option-text">⚡ Верность слову и чёткое следование плану</span></label>
+            </div>
+        </div>
+
+        <!-- Вопрос 7 -->
+        <div class="question-card">
+            <div class="question-text">7. Как бы вас описали друзья?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q7" value="Жрец,Воин"> <span class="option-text">🏠 «Надёжный тыл, всегда подстрахует»</span></label>
+                <label class="option"><input type="radio" name="q7" value="Плут,Варвар"> <span class="option-text">🎢 «Авантюрист, вечно ввязывается в истории»</span></label>
+                <label class="option"><input type="radio" name="q7" value="Волшебник"> <span class="option-text">🧠 «Умник, который всё знает»</span></label>
+                <label class="option"><input type="radio" name="q7" value="Бард,Чародей"> <span class="option-text">🎉 «Душа компании, с ним не соскучишься»</span></label>
+                <label class="option"><input type="radio" name="q7" value="Друид,Монах,Колдун"> <span class="option-text">🌙 «Странный, но классный — живёт по своим правилам»</span></label>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button type="button" id="submitBtn">✨ Узнать свой класс ✨</button>
+            <button type="button" id="resetBtn" class="reset-btn">⟳ Пройти заново</button>
+        </div>
+    </form>
+
+    <div id="resultArea" class="result" style="display: none;">
+        <div>🎲 Твой результат 🎲</div>
+        <div id="resultClassName" class="result-class"></div>
+        <div id="resultDesc" class="result-desc"></div>
+    </div>
+    <div class="footer-note">Честность с самим собой даёт самый точный класс 😉</div>
+</div>
+
+<script>
+    // Полные описания каждого класса (из ассоциаций в первом сообщении)
+    const classDescriptions = {
+        "Варвар": "Вы решаете проблемы грубой силой или эмоциональным взрывом, не любите долго думать. Ваша работа связана с физическим трудом, спортом или экстримом. В стрессе вы скорее побежите ломать, чем обсуждать.",
+        "Бард": "Вы душа компании, обаятельны и умеете вдохновлять. Ваша профессия — учитель, коуч, ведущий или маркетолог. Легко находите подход к людям и любите быть в центре внимания.",
+        "Жрец": "Вы заботливый помощник, поддерживающий других в трудную минуту. Врач, психолог, соцработник или волонтёр. Ставите нужды коллектива выше своих и умеете создать уют.",
+        "Друид": "Вы обожаете природу, животных и тихие радости жизни. Работа в садоводстве, экологии, геологии. Терпеливы, наблюдательны и верите в баланс и цикличность.",
+        "Воин": "Вы дисциплинированы, методичны и привыкли полагаться на тренировки. Военный, спортсмен, инженер, полицейский. Надёжны и не паникуете в кризис.",
+        "Монах": "Вы контролируете эмоции и тело, ведёте здоровый образ жизни или практикуете медитацию/единоборства. Фитнес, охрана, преподаватель самообладания. Ваша сила — в сосредоточении.",
+        "Паладин": "У вас твёрдые моральные принципы, вы не идёте на компромисс с совестью. Юрист, следователь, правозащитник, священник. Всегда защищаете слабого и держите слово.",
+        "Следопыт": "Вы практичны, независимы и любите активный отдых: походы, выживание. Гид, спасатель, геолог, фермер. Знаете, как добыть ресурсы и найти путь.",
+        "Плут": "Вы гибки, хитры и ищете нестандартные решения. Программист, журналист-расследователь, детектив, трейдер. Видите уязвимости систем и умеете извлечь выгоду.",
+        "Чародей": "Вы обладаете врождённым талантом или харизмой, успех без долгой учёбы. Продажи, политика, искусство, стартапы. Действуете по наитию — и это работает.",
+        "Колдун": "Вы амбициозны и заключаете альянсы для достижения цели. Бизнес-партнёр, политконсультант, инвестор. Получаете силу от связей и не боитесь «сделок с дьяволом».",
+        "Волшебник": "Вы учитесь всю жизнь, обожаете книги, схемы и исследования. Учёный, программист, аналитик, инженер. Знания и подготовка решают любую проблему."
+    };
+
+    // Функция для подсчёта результатов
+    function computeResult() {
+        // Словарь очков для всех классов
+        let scores = {};
+        const allClasses = ["Варвар","Бард","Жрец","Друид","Воин","Монах","Паладин","Следопыт","Плут","Чародей","Колдун","Волшебник"];
+        allClasses.forEach(c => scores[c] = 0);
+
+        // Собираем ответы с формы (только выбранные радио)
+        const form = document.getElementById('quizForm');
+        const formData = new FormData(form);
+        // formData содержит только выбранные значения (по name)
+        // Но мы пройдём по всем вопросам от q1 до q7
+        for (let i = 1; i <= 7; i++) {
+            const radios = document.getElementsByName(`q${i}`);
+            let selectedValue = null;
+            for (let r of radios) {
+                if (r.checked) {
+                    selectedValue = r.value;
+                    break;
+                }
+            }
+            if (selectedValue) {
+                // Значение может содержать несколько классов через запятую
+                const classNames = selectedValue.split(',');
+                for (let cls of classNames) {
+                    cls = cls.trim();
+                    if (scores[cls] !== undefined) scores[cls]++;
+                }
+            }
+        }
+
+        // Проверяем, что хоть что-то выбрано
+        let totalAnswered = 0;
+        for (let i = 1; i <= 7; i++) {
+            const radios = document.getElementsByName(`q${i}`);
+            let anyChecked = Array.from(radios).some(r => r.checked);
+            if (anyChecked) totalAnswered++;
+        }
+        if (totalAnswered === 0) return null;
+
+        // Находим максимальное количество очков
+        let maxScore = -1;
+        for (let cls in scores) {
+            if (scores[cls] > maxScore) maxScore = scores[cls];
+        }
+        // Собираем классы-победители
+        let winners = [];
+        for (let cls in scores) {
+            if (scores[cls] === maxScore && maxScore > 0) {
+                winners.push(cls);
+            }
+        }
+
+        let resultClassText = "";
+        let resultDescription = "";
+
+        if (winners.length === 1) {
+            resultClassText = winners[0];
+            resultDescription = classDescriptions[winners[0]] || "Таинственный странник, чья суть ещё не раскрыта.";
+        } else {
+            // мультикласс
+            resultClassText = winners.join(" / ");
+            // Собираем объединённое описание (кратко)
+            let combinedDesc = "Вы — мультикласс, сочетающий черты: ";
+            const traits = winners.map(w => {
+                switch(w) {
+                    case "Варвар": return "силовой напор";
+                    case "Бард": return "обаяние и вдохновение";
+                    case "Жрец": return "заботу и поддержку";
+                    case "Друид": return "связь с природой";
+                    case "Воин": return "дисциплину и надёжность";
+                    case "Монах": return "самообладание и контроль";
+                    case "Паладин": return "принципиальность";
+                    case "Следопыт": return "независимость и практичность";
+                    case "Плут": return "хитрость и гибкость";
+                    case "Чародей": return "врождённую харизму";
+                    case "Колдун": return "амбициозность и связи";
+                    case "Волшебник": return "аналитический ум";
+                    default: return w;
+                }
+            });
+            combinedDesc += traits.join(", ") + ". Ваш путь уникален, вы не вписываетесь в один шаблон!";
+            resultDescription = combinedDesc;
+        }
+
+        return {
+            className: resultClassText,
+            description: resultDescription
+        };
+    }
+
+    function displayResult() {
+        const result = computeResult();
+        const resultDiv = document.getElementById('resultArea');
+        const classNameSpan = document.getElementById('resultClassName');
+        const descSpan = document.getElementById('resultDesc');
+
+        if (!result) {
+            classNameSpan.innerText = "❓ Ничего не выбрано";
+            descSpan.innerText = "Ответьте хотя бы на один вопрос, чтобы узнать свой класс!";
+            resultDiv.style.display = "block";
+            return;
+        }
+
+        classNameSpan.innerText = result.className;
+        descSpan.innerText = result.description;
+        resultDiv.style.display = "block";
+
+        // Плавный скролл к результату
+        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function resetQuiz() {
+        // Сбросить все радиокнопки
+        const allRadios = document.querySelectorAll('input[type="radio"]');
+        allRadios.forEach(radio => radio.checked = false);
+        // Скрыть блок результата
+        document.getElementById('resultArea').style.display = 'none';
+        // Прокрутить вверх
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Навешиваем обработчики
+    document.getElementById('submitBtn').addEventListener('click', displayResult);
+    document.getElementById('resetBtn').addEventListener('click', resetQuiz);
+
+    // Дополнительно: если вдруг пользователь нажал Enter где-то, не отправляем форму
+    document.getElementById('quizForm').addEventListener('submit', (e) => e.preventDefault());
+</script>
+</body>
+</html>
